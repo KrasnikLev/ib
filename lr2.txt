@@ -1,0 +1,43 @@
+Лабороторная раота 2
+Списки управления доступом (ACL)
+
+ACL прав доступа - определяет доступ к файлу или каталогу на основе установленных прав
+ACL по умол. - назначается только папке. Все объекты внутри такой папки наследует ACL родительской ппки
+
+Модификация прав доступа осущствлятся командой setfacl -m
+Просмотр прав доступа - командой getfacl "имя объекта"
+
+Пример установки ACL (установка разрешений на чтение и выполнение для пользователя tmp3)
+
+student@alexander-VirtualBox:~$ setfacl -m u:tmp3:rx sStickyBit/
+student@alexander-VirtualBox:~$ ls -l
+итого 56
+-rw-rw-r--  1 student student    0 окт 30 09:35  2
+-rw-rw-r--  1 student student 2123 окт 19 15:20  ib.text
+-rw-rw-r--  1 student student  620 окт 16 13:22  lr1.txt
+drwxrwxr-x  2 student student 4096 сен  7 15:30  prpd
+drwxrwxr-x  6 student student 4096 авг 30 14:19  real
+drwx------  5 student student 4096 сен  3 10:17  snap
+drwxrwxrwt+ 3 student student 4096 ноя  6 09:21  sStickyBit
+
+установка разрешений для пользователя tmp4
+
+
+Установка разрешений для группы
+
+student@alexander-VirtualBox:~$ setfacl -m g:tempgrp:rwx sStickyBit/
+
+При смене разрешений командой chmod ACL сохраняется в прежнем видеm, но сбрасывается маска
+student@alexander-VirtualBox:~$ sudo chmod 755 sStickyBit/
+student@alexander-VirtualBox:~$ getfacl sStickyBit/
+# file: sStickyBit/
+# owner: student
+# group: student
+user::rwx
+user:tmp4:rwx			#effective:r-x
+user:tmp3:r-x
+group::rwx			#effective:r-x
+group:tempgrp:rwx		#effective:r-x
+mask::r-x
+other::r-x
+
